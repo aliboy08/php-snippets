@@ -1,0 +1,23 @@
+$url = 'https://fivebyfive.com.au/wp-json/wp/v2/posts';
+
+// Using file_get_contents
+// Some hostings might disable this for security purposes
+$result = file_get_contents($url);
+$result = json_decode($result);
+foreach( $result as $post ) {
+	echo '<pre>'. print_r($post->title->rendered, true) . '</pre>';
+}
+
+// Using url
+//  Initiate curl
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Disable SSL verification
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Will return the response, if false it print the response
+curl_setopt($ch, CURLOPT_URL,$url); // Set the url
+$result = curl_exec($ch); // Execute
+curl_close($ch); // Closing
+
+$result = json_decode($result);
+foreach( $result as $post ) {
+	echo '<pre>'. print_r($post->title->rendered, true) . '</pre>';
+}
